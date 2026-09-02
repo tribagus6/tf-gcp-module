@@ -50,6 +50,12 @@ variable "use_static_ip" {
   default     = false
 }
 
+variable "static_ip_address" {
+  type        = string
+  description = "Specific existing static IP address to assign to this VM (e.g. from a promoted IP)"
+  default     = null
+}
+
 variable "network_tier" {
   type        = string
   description = "The networking tier used for the public IP. Options: STANDARD or PREMIUM."
