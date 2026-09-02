@@ -84,10 +84,10 @@ variable "deletion_protection" {
 variable "node_pools" {
   description = "Map of node pool configurations"
   type = map(object({
-    machine_type = optional(string, "e2-medium")
-    disk_size_gb = optional(number, 50)
-    disk_type    = optional(string, "pd-standard")
-    is_spot      = optional(bool, true)
+    machine_type = optional(string)
+    disk_size_gb = optional(number)
+    disk_type    = optional(string)
+    is_spot      = optional(bool)
     node_count   = optional(number)
     autoscaling = optional(object({
       min_node_count = number
@@ -95,8 +95,8 @@ variable "node_pools" {
     }))
     max_pods_per_node = optional(number)
     service_account   = optional(string)
-    tags              = optional(list(string), [])
-    labels            = optional(map(string), {})
+    tags              = optional(list(string))
+    labels            = optional(map(string))
   }))
   default = {}
 }
