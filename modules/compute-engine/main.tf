@@ -1,3 +1,11 @@
+resource "google_compute_address" "static_ip" {
+  count        = var.add_public_ip && var.use_static_ip ? 1 : 0
+  name         = "${var.instance_name}-ip"
+  project      = var.project_id
+  region       = coalesce(var.region, join("-", slice(split("-", var.zone), 0, 2)))
+  network_tier = var.network_tier
+}
+
 resource "google_compute_instance" "vm_instance" {
   name                    = var.instance_name
   project                 = var.project_id
@@ -14,11 +22,10 @@ resource "google_compute_instance" "vm_instance" {
 
   network_interface {
     subnetwork = var.subnetwork
-    # Only add access_config (public IP) if it's NOT a spot VM (matching user's previous request for private spot VMs)
-    # OR we can add a variable for this. Let's add a variable for clarity.
     dynamic "access_config" {
       for_each = var.add_public_ip ? [1] : []
       content {
+        nat_ip       = var.use_static_ip ? google_compute_address.static_ip[0].address : null
         network_tier = var.network_tier
       }
     }
@@ -42,4 +49,3 @@ resource "google_compute_instance" "vm_instance" {
     scopes = ["cloud-platform"]
   }
 }
-

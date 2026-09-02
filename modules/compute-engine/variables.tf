@@ -10,6 +10,11 @@ variable "zone" {
   type = string
 }
 
+variable "region" {
+  type    = string
+  default = null
+}
+
 variable "machine_type" {
   type    = string
   default = "e2-micro"
@@ -37,6 +42,12 @@ variable "is_spot" {
 variable "add_public_ip" {
   type    = bool
   default = false
+}
+
+variable "use_static_ip" {
+  type        = bool
+  description = "Whether to allocate and attach a permanent reserved static IP"
+  default     = false
 }
 
 variable "network_tier" {
