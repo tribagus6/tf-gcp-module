@@ -37,4 +37,9 @@ resource "google_compute_instance" "vm_instance" {
       }
     }
   }
+
+  service_account {
+    scopes = ["cloud-platform"]
+  }
 }
+
