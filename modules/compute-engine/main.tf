@@ -1,9 +1,9 @@
 resource "google_compute_address" "static_ip" {
-  count        = var.add_public_ip && var.use_static_ip && var.static_ip_address == null ? 1 : 0
+  count        = var.add_public_ip && coalesce(var.use_static_ip, false) && var.static_ip_address == null ? 1 : 0
   name         = "${var.instance_name}-ip"
   project      = var.project_id
   region       = coalesce(var.region, join("-", slice(split("-", var.zone), 0, 2)))
-  network_tier = var.network_tier
+  network_tier = coalesce(var.network_tier, "STANDARD")
 }
 
 resource "google_compute_instance" "vm_instance" {
@@ -25,8 +25,8 @@ resource "google_compute_instance" "vm_instance" {
     dynamic "access_config" {
       for_each = var.add_public_ip ? [1] : []
       content {
-        nat_ip       = var.static_ip_address != null ? var.static_ip_address : (var.use_static_ip ? google_compute_address.static_ip[0].address : null)
-        network_tier = var.network_tier
+        nat_ip       = var.static_ip_address != null ? var.static_ip_address : (coalesce(var.use_static_ip, false) ? google_compute_address.static_ip[0].address : null)
+        network_tier = coalesce(var.network_tier, "STANDARD")
       }
     }
   }
