@@ -43,10 +43,10 @@ resource "google_container_cluster" "primary" {
 
   # Master Authorized Networks (optional)
   dynamic "master_authorized_networks_config" {
-    for_each = length(var.master_authorized_networks_config) > 0 ? [1] : []
+    for_each = var.master_authorized_networks_config != null && length(coalesce(var.master_authorized_networks_config, [])) > 0 ? [1] : []
     content {
       dynamic "cidr_blocks" {
-        for_each = var.master_authorized_networks_config
+        for_each = coalesce(var.master_authorized_networks_config, [])
         content {
           cidr_block   = cidr_blocks.value.cidr_block
           display_name = cidr_blocks.value.display_name
