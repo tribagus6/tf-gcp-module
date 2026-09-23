@@ -75,6 +75,12 @@ variable "release_channel" {
   default     = "REGULAR"
 }
 
+variable "datapath_provider" {
+  description = "The desired datapath provider for this cluster. By default, ADVANCED_DATAPATH enables Dataplane V2."
+  type        = string
+  default     = "ADVANCED_DATAPATH"
+}
+
 variable "deletion_protection" {
   description = "Whether to enable Terraform deletion protection for the cluster"
   type        = bool

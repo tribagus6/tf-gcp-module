@@ -33,6 +33,9 @@ resource "google_container_cluster" "primary" {
     channel = var.release_channel
   }
 
+  # Dataplane V2 configuration
+  datapath_provider = var.datapath_provider
+
   # Workload Identity Configuration
   workload_identity_config {
     workload_pool = "${var.project_id}.svc.id.goog"
