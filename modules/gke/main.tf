@@ -10,6 +10,11 @@ resource "google_container_cluster" "primary" {
   remove_default_node_pool = true
   initial_node_count       = 1
 
+  node_config {
+    disk_type    = "pd-standard"
+    disk_size_gb = 20
+  }
+
   # IP Allocation Policy for Secondary Ranges (VPC-native cluster)
   ip_allocation_policy {
     cluster_secondary_range_name  = var.pod_secondary_range_name
